@@ -50,14 +50,14 @@ always_ff@(posedge fpga_clk)
 // load signal logic
 always_ff@(posedge fpga_clk)
     if (~nrst) load <= 0;
-    else if (~busy_tx)
+    else if (tx_en_posedge)
         load <= 1;
     else 
         load <= 0;
 
 // tick counter and detect baud edge
 always_ff @(posedge fpga_clk) begin
-    if (~nrst) begin
+    if (~nrst | tx_en_posedge) begin
         tick_cnt <= 0;
         baud_edge = 0;
     end else if (tick_cnt == tick_total) begin
@@ -71,7 +71,7 @@ end
 
 // baud rate edge detection logic
 always_ff @(posedge fpga_clk) begin
-    if (~nrst | (tx_en_posedge == 1)) begin
+    if (~nrst | tx_en_posedge) begin
         baud_edge_d1 <= 0;
         baud_edge_d2 <= 0;
         baud_clk <= 0;

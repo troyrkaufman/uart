@@ -11,51 +11,51 @@ cModel Technology
 dC:/intelFPGA/20.1
 vuart_tx
 Z0 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
-Z1 !s110 1749236885
+Z1 !s110 1749237709
 !i10b 1
-!s100 b[J0_JZ1Ff^ZcMAolKH=90
+!s100 j?2TGEi1TSDVlQWBkAUAC1
 Z2 !s11b Dg1SIo80bB@j0V0VzS_@n1
-ImjbAbQ8X_bk>bZK[MKNJM0
+IEMNgImHVA;hY]mAkFRR260
 Z3 VDg1SIo80bB@j0V0VzS_@n1
 S1
 Z4 dC:/Users/troyk/Desktop/aero/uart/sim
-Z5 w1749236878
+w1749237403
 8C:/Users/troyk/Desktop/aero/uart/src/uart_tx.sv
 FC:/Users/troyk/Desktop/aero/uart/src/uart_tx.sv
-!i122 91
+!i122 98
 L0 5 117
-Z6 OV;L;2020.1;71
+Z5 OV;L;2020.1;71
 r1
 !s85 0
 31
-Z7 !s108 1749236885.000000
+Z6 !s108 1749237709.000000
 !s107 C:/Users/troyk/Desktop/aero/uart/src/uart_tx.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/troyk/Desktop/aero/uart/src/uart_tx.sv|
 !i113 1
-Z8 o-work work -sv
-Z9 tCvgOpt 0
+Z7 o-work work -sv
+Z8 tCvgOpt 0
 vuart_tx_tb
 R0
 R1
 !i10b 1
-!s100 nFHaa;Ld;0J;51nSZ[;4C2
+!s100 TcRLN[mEfhWogmP6@LUQc1
 R2
-I@bEgeXNHiCG6ncfgh;JGd3
+IXnA=9XkgU[VO<e<moal=d0
 R3
 S1
 R4
-R5
+w1749237707
 8C:/Users/troyk/Desktop/aero/uart/tb/uart_tx_tb.sv
 FC:/Users/troyk/Desktop/aero/uart/tb/uart_tx_tb.sv
-!i122 92
-L0 7 35
-R6
+!i122 99
+L0 7 38
+R5
 r1
 !s85 0
 31
-R7
+R6
 !s107 C:/Users/troyk/Desktop/aero/uart/tb/uart_tx_tb.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/troyk/Desktop/aero/uart/tb/uart_tx_tb.sv|
 !i113 1
+R7
 R8
-R9

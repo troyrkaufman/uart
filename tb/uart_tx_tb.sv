@@ -31,10 +31,13 @@ module uart_tx_tb();
         #7; 
         tx_en = 1;
         din = 8'hee;
-        #800;
+        #700; tx_en = 0;
+
+        #100; tx_en = 1;
         din = 8'h95;
-        #800;
-        din = 8'h78;
+        #1400; tx_en = 0;
+        #200; tx_en = 1;
+        din = 8'hf0;
         
         
     end
