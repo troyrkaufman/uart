@@ -7,16 +7,17 @@ module uart_tx(
     input logic nrst,         // inverted reset
     input logic tx_en,        // enable transmission
     input logic [7:0] din,    // one byte data input
-    output logic sout         // one bit data output
+    output logic sout,         // one bit data output
+    output logic busy_tx
 );
 
-typedef enum logic [1:0] {IDLE, START, TX} statetype; // I don't think the STOP state is necessary
+typedef enum logic [1:0] {IDLE, TX} statetype; // I don't think the STOP state is necessary
 statetype cs, ns;
 
 localparam BAUDRATE = 'd115200; // adjust baudrate according to PC setting
 logic [15:0] tick_total;       // the total amount of fpga clk cycles that must pass before a bit can be transmitted
 logic [15:0] tick_cnt;         // tick counter that updates how many fpga clk cycles must pass
-logic [7:0] dout;             // serial data output on every flip flop in PISO shift reg
+logic [8:0] dout;             // serial data output on every flip flop in PISO shift reg
 //logic [2:0] bit_cnt;          // counts the number of data bits that have been transmitted
 logic tx_complete;            // flag that asserts whether all interesting data bits have been transmitted
 logic baud_clk;               // signal clocked based on the baudrate
@@ -29,7 +30,7 @@ logic tx_en_d1;
 logic tx_en_d2;
 logic tx_en_posedge;
 
-assign tick_total = 'd15; //(fpga_clk / BAUDRATE) - 1; // calculate the total # of ticks that each bit is transmitted out on
+assign tick_total = 'd5; //(fpga_clk / BAUDRATE) - 1; // calculate the total # of ticks that each bit is transmitted out on
 
 // tx_en edge detection logic
 always_ff@(posedge fpga_clk)
@@ -56,7 +57,7 @@ always_ff@(posedge fpga_clk)
 
 // tick counter and detect baud edge
 always_ff @(posedge fpga_clk) begin
-    if (~nrst) begin
+    if (~nrst | tx_en_posedge) begin
         tick_cnt <= 0;
         baud_edge = 0;
     end else if (tick_cnt == tick_total) begin
@@ -70,7 +71,7 @@ end
 
 // baud rate edge detection logic
 always_ff @(posedge fpga_clk) begin
-    if (~nrst) begin
+    if (~nrst | tx_en_posedge) begin
         baud_edge_d1 <= 0;
         baud_edge_d2 <= 0;
         baud_clk <= 0;
@@ -79,10 +80,10 @@ always_ff @(posedge fpga_clk) begin
         baud_edge_d1 <= baud_edge;
         baud_edge_d2 <= baud_edge_d1;
 
-        if (baud_edge_d1 == 1 && baud_edge_d2 == 0)
+        if (baud_edge_d1 == 1 & baud_edge_d2 == 0)
             begin baud_clk <= 1; baud_cnt <= baud_cnt + 1; end
-        else if (baud_cnt > 4'd8) 
-            begin baud_clk <= baud_clk; baud_cnt <= baud_cnt; end
+        else if (baud_cnt > 4'd9) 
+            begin baud_clk <= baud_clk; baud_cnt <= 0; end
         else
             begin baud_clk <= 0; baud_cnt <= baud_cnt; end
     end
@@ -91,39 +92,32 @@ end
 // PISO Shift Register
 always_ff @(posedge fpga_clk) 
     if (~nrst) begin
-        dout <= 8'b11111111;
+        dout <= 9'b111111111;
         cs <= IDLE; end
     else if (load) begin
-        dout <= din;
-	    cs <= START; end
+        dout <= {1'b0, din};
+	    cs <= TX; end
     else if (baud_clk) begin
-        dout <= {dout[6:0], 1'b1};
+        dout <= {dout[7:0], 1'b1};
 		cs <= TX; end 
-
 
 // nextstate logic
 always_comb
     case(cs)
-        IDLE:   if (tx_en)  ns = START;
+        IDLE:   if (tx_en)  ns = TX;
                 else        ns = IDLE;
-        START:     ns = TX; // have counter conditional here
-        TX:     if (baud_cnt > 4'd8) ns = IDLE;
+        //START:     ns = TX; // have counter conditional here
+        TX:     if (baud_cnt > 4'd9) ns = TX;
+                else if (~tx_en) ns = IDLE;
                 else ns = TX;
         default:ns = IDLE;
     endcase
 
 // output logic 
-assign sout_data = dout[6];
+assign sout_data = dout[8];
 
-    always_comb begin
-        if (IDLE) 
-            sout = sout_data;
-        else if (START) 
-            sout = 0;
-        else if (TX) 
-            sout = sout_data;
-        else 
-            sout = sout_data; 
-    end
+assign sout = sout_data;
 
 endmodule
+
+// CHECKINGGGGGGGGGGGGGGGGGGGGG

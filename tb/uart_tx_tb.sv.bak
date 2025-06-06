@@ -20,6 +20,8 @@ module uart_tx_tb();
     end
 
     initial begin
+        $dumpfile("uart_tx.vcd");
+        $dumpvars(0, uart_tx_tb);
         nrst = 0;
         tx_en = 0;
         din = 8'h00;
@@ -29,14 +31,11 @@ module uart_tx_tb();
         #7; 
         tx_en = 1;
         din = 8'hee;
-        #700; tx_en = 0;
-
-        #100; tx_en = 1;
+        /*#60;
         din = 8'h95;
-        #1400; tx_en = 0;
-        #200; tx_en = 1;
-        din = 8'hf0;
-        
+        #60;
+        din = 8'h78;
+        */
         
     end
 endmodule
