@@ -7,7 +7,8 @@ module uart_tx(
     input logic nrst,         // inverted reset
     input logic tx_en,        // enable transmission
     input logic [7:0] din,    // one byte data input
-    output logic sout         // one bit data output
+    output logic sout,         // one bit data output
+    output logic busy_tx
 );
 
 typedef enum logic [1:0] {IDLE, TX} statetype; // I don't think the STOP state is necessary
@@ -29,7 +30,7 @@ logic tx_en_d1;
 logic tx_en_d2;
 logic tx_en_posedge;
 
-assign tick_total = 'd15; //(fpga_clk / BAUDRATE) - 1; // calculate the total # of ticks that each bit is transmitted out on
+assign tick_total = 'd5; //(fpga_clk / BAUDRATE) - 1; // calculate the total # of ticks that each bit is transmitted out on
 
 // tx_en edge detection logic
 always_ff@(posedge fpga_clk)
@@ -70,7 +71,7 @@ end
 
 // baud rate edge detection logic
 always_ff @(posedge fpga_clk) begin
-    if (~nrst) begin
+    if (~nrst | (tx_en_posedge == 1)) begin
         baud_edge_d1 <= 0;
         baud_edge_d2 <= 0;
         baud_clk <= 0;
@@ -79,10 +80,10 @@ always_ff @(posedge fpga_clk) begin
         baud_edge_d1 <= baud_edge;
         baud_edge_d2 <= baud_edge_d1;
 
-        if (baud_edge_d1 == 1 && baud_edge_d2 == 0)
+        if (baud_edge_d1 == 1 & baud_edge_d2 == 0)
             begin baud_clk <= 1; baud_cnt <= baud_cnt + 1; end
         else if (baud_cnt > 4'd9) 
-            begin baud_clk <= baud_clk; baud_cnt <= baud_cnt; end
+            begin baud_clk <= baud_clk; baud_cnt <= 0; end
         else
             begin baud_clk <= 0; baud_cnt <= baud_cnt; end
     end
@@ -106,7 +107,8 @@ always_comb
         IDLE:   if (tx_en)  ns = TX;
                 else        ns = IDLE;
         //START:     ns = TX; // have counter conditional here
-        TX:     if (baud_cnt > 4'd9) ns = IDLE;
+        TX:     if (baud_cnt > 4'd9) ns = TX;
+                else if (~tx_en) ns = IDLE;
                 else ns = TX;
         default:ns = IDLE;
     endcase
