@@ -50,7 +50,7 @@ always_ff@(posedge fpga_clk)
 // load signal logic
 always_ff@(posedge fpga_clk)
     if (~nrst) load <= 0;
-    else if (tx_en_posedge)
+    else if (~busy_tx)
         load <= 1;
     else 
         load <= 0;
@@ -119,3 +119,5 @@ assign sout_data = dout[8];
 assign sout = sout_data;
 
 endmodule
+
+// CHECKINGGGGGGGGGGGGGGGGGGGGG
