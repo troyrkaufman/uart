@@ -20,8 +20,6 @@ module uart_tx_tb();
     end
 
     initial begin
-        $dumpfile("uart_tx.vcd");
-        $dumpvars(0, uart_tx_tb);
         nrst = 0;
         tx_en = 0;
         din = 8'h00;
