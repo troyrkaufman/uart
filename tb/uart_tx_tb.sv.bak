@@ -29,7 +29,7 @@ module uart_tx_tb();
         nrst = 1;
         #7 
         tx_en = 1;
-        din = 8'hee;
+        din = 8'haa;
 
         #2500
         tx_en = 0;

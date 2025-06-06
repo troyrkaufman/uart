@@ -3,31 +3,12 @@
 # 2 compiles, 0 failed with no errors.
 vsim -gui work.uart_tx_tb -t ns
 # vsim -gui work.uart_tx_tb -t ns 
-# Start time: 06:41:34 on Jun 06,2025
+# Start time: 09:20:31 on Jun 06,2025
 # Loading sv_std.std
 # Loading work.uart_tx_tb
 # Loading work.uart_tx
-add wave -position end  sim:/uart_tx_tb/dut/fpga_clk
-add wave -position end  sim:/uart_tx_tb/dut/nrst
-add wave -position end  sim:/uart_tx_tb/dut/tx_en
-add wave -position end  sim:/uart_tx_tb/dut/din
-add wave -position end  sim:/uart_tx_tb/dut/tick_total
-add wave -position end  sim:/uart_tx_tb/dut/tick_cnt
-add wave -position end  sim:/uart_tx_tb/dut/baud_edge
-add wave -position end  sim:/uart_tx_tb/dut/baud_cnt
-add wave -position end  sim:/uart_tx_tb/dut/baud_edge_d1
-add wave -position end  sim:/uart_tx_tb/dut/baud_edge_d2
-add wave -position 8  sim:/uart_tx_tb/dut/baud_clk
-add wave -position end  sim:/uart_tx_tb/dut/dout
-add wave -position end  sim:/uart_tx_tb/dut/cs
-add wave -position end  sim:/uart_tx_tb/dut/load
-add wave -position end  sim:/uart_tx_tb/dut/ns
-add wave -position end  sim:/uart_tx_tb/dut/baud_cnt
-add wave -position end  sim:/uart_tx_tb/dut/tx_en
-add wave -position end  sim:/uart_tx_tb/dut/sout_data
-add wave -position end  sim:/uart_tx_tb/dut/sout
-write format wave -window .main_pane.wave.interior.cs.body.pw.wf C:/Users/troyk/Desktop/aero/sim/wave.do
-run 400 ns
+do wave.do
+run 1500 ns
 # Compile of uart_tx.sv was successful.
 # Compile of uart_tx_tb.sv was successful.
 # 2 compiles, 0 failed with no errors.
@@ -36,7 +17,7 @@ restart -f
 # ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
 # Loading work.uart_tx_tb
 # Loading work.uart_tx
-run 400 ns
+run 1500 ns
 # GetModuleFileName: The specified module could not be found.
 # 
 # 
@@ -48,40 +29,7 @@ restart -f
 # ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
 # Loading work.uart_tx_tb
 # Loading work.uart_tx
-run 2500 ns
-# GetModuleFileName: The specified module could not be found.
-# 
-# 
-# Compile of uart_tx.sv failed with 7 errors.
-# Compile of uart_tx_tb.sv was successful.
-# 2 compiles, 1 failed with 7 errors.
-# Compile of uart_tx.sv was successful.
-# Compile of uart_tx_tb.sv was successful.
-# 2 compiles, 0 failed with no errors.
-restart -f
-# Closing VCD file "uart_tx.vcd"
-# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
-# Loading work.uart_tx_tb
-# Loading work.uart_tx
-run 2500 ns
-# GetModuleFileName: The specified module could not be found.
-# 
-# 
-# Compile of uart_tx.sv failed with 7 errors.
-# Compile of uart_tx_tb.sv was successful.
-# 2 compiles, 1 failed with 7 errors.
-# Compile of uart_tx.sv failed with 7 errors.
-# Compile of uart_tx_tb.sv was successful.
-# 2 compiles, 1 failed with 7 errors.
-# Compile of uart_tx.sv was successful.
-# Compile of uart_tx_tb.sv was successful.
-# 2 compiles, 0 failed with no errors.
-restart -f 
-# Closing VCD file "uart_tx.vcd"
-# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
-# Loading work.uart_tx_tb
-# Loading work.uart_tx
-run 2500 ns
+run 2000 ns
 # GetModuleFileName: The specified module could not be found.
 # 
 # 
@@ -93,69 +41,13 @@ restart -f
 # ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
 # Loading work.uart_tx_tb
 # Loading work.uart_tx
-run 5000 ns
+run 1800 ns
 # GetModuleFileName: The specified module could not be found.
 # 
 # 
-# Compile of uart_tx.sv was successful.
-# Compile of uart_tx_tb.sv was successful.
-# 2 compiles, 0 failed with no errors.
 restart -f
 # Closing VCD file "uart_tx.vcd"
-# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
-# Loading work.uart_tx_tb
-# Loading work.uart_tx
-run 7500 ns
+run 10000 ns
 # GetModuleFileName: The specified module could not be found.
 # 
 # 
-# Compile of uart_tx.sv was successful.
-# Compile of uart_tx_tb.sv was successful.
-# 2 compiles, 0 failed with no errors.
-restart -f
-# Closing VCD file "uart_tx.vcd"
-# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
-# Loading work.uart_tx_tb
-# Loading work.uart_tx
-run 2500 ns
-# GetModuleFileName: The specified module could not be found.
-# 
-# 
-# Compile of uart_tx.sv was successful.
-# Compile of uart_tx_tb.sv was successful.
-# 2 compiles, 0 failed with no errors.
-restart -f
-# Closing VCD file "uart_tx.vcd"
-# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
-# Loading work.uart_tx_tb
-# Loading work.uart_tx
-run 2500 ns
-# GetModuleFileName: The specified module could not be found.
-# 
-# 
-# Compile of uart_tx.sv was successful.
-# Compile of uart_tx_tb.sv was successful.
-# 2 compiles, 0 failed with no errors.
-restart -f
-# Closing VCD file "uart_tx.vcd"
-# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
-# Loading work.uart_tx_tb
-# Loading work.uart_tx
-run 2500 ns
-# GetModuleFileName: The specified module could not be found.
-# 
-# 
-# Compile of uart_tx.sv was successful.
-# Compile of uart_tx_tb.sv was successful.
-# 2 compiles, 0 failed with no errors.
-restart -f
-# Closing VCD file "uart_tx.vcd"
-# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
-# Loading work.uart_tx_tb
-# Loading work.uart_tx
-run 2500 ns
-# GetModuleFileName: The specified module could not be found.
-# 
-# 
-# End time: 08:58:01 on Jun 06,2025, Elapsed time: 2:16:27
-# Errors: 0, Warnings: 1
