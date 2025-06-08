@@ -1,0 +1,39 @@
+# ModelSim/QuestaSim temporary & output files
+transcript
+*.wlf
+*.log
+*.bak
+*.ini
+*.vstf
+*.vcd
+*.ucdb
+*.ddb
+*.err
+*.mif
+*.sdf
+
+# Simulation work libraries and generated directories
+work/
+vsim.wlf
+modelsim.ini
+
+# Waveform files
+# *.do             <-- keep your .do files tracked!
+*.vwf
+*.wlf.*
+*.wlfbackup*
+
+# Compilation libraries
+lib*/           # e.g., lib/ lib_*/ etc.
+libraries/
+
+# Auto-generated memory files or dumps
+*.mem
+*.hex
+
+# Misc
+*.~*
+*#
+*.*~
+*.swp
+.DS_Store
