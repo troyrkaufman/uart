@@ -8,10 +8,11 @@ module uart_tx(
     input logic tx_en,        // enable transmission
     input logic [7:0] din,    // one byte data input
     output logic sout,         // one bit data output
-    output logic busy_tx
+    output logic busy_tx,
+    output logic baud_clk
 );
 
-typedef enum logic [1:0] {IDLE, TX} statetype; // I don't think the STOP state is necessary
+typedef enum logic [1:0] {IDLE, START, TX} statetype; // I don't think the STOP state is necessary
 statetype cs, ns;
 
 localparam BAUDRATE = 'd115200; // adjust baudrate according to PC setting
@@ -20,7 +21,7 @@ logic [15:0] tick_cnt;         // tick counter that updates how many fpga clk cy
 logic [8:0] dout;             // serial data output on every flip flop in PISO shift reg
 //logic [2:0] bit_cnt;          // counts the number of data bits that have been transmitted
 logic tx_complete;            // flag that asserts whether all interesting data bits have been transmitted
-logic baud_clk;               // signal clocked based on the baudrate
+//logic baud_clk;               // signal clocked based on the baudrate
 logic baud_edge;              // represents a LOW or HIGH logic value depending on the tick_cnt
 logic baud_edge_d1;           // signal assisting in finding the rising edge in baud_clk
 logic baud_edge_d2;           // signal assisting in finding the rising edge in baud_clk
@@ -50,7 +51,7 @@ always_ff@(posedge fpga_clk)
 // load signal logic
 always_ff@(posedge fpga_clk)
     if (~nrst) load <= 0;
-    else if (tx_en_posedge)
+    else if (cs == START)
         load <= 1;
     else 
         load <= 0;
@@ -82,7 +83,7 @@ always_ff @(posedge fpga_clk) begin
 
         if (baud_edge_d1 == 1 & baud_edge_d2 == 0)
             begin baud_clk <= 1; baud_cnt <= baud_cnt + 1; end
-        else if (baud_cnt > 4'd9) 
+        else if (baud_cnt == 4'd10) 
             begin baud_clk <= baud_clk; baud_cnt <= 0; end
         else
             begin baud_clk <= 0; baud_cnt <= baud_cnt; end
@@ -96,28 +97,25 @@ always_ff @(posedge fpga_clk)
         cs <= IDLE; end
     else if (load) begin
         dout <= {1'b0, din};
-	    cs <= TX; end
+	    cs <= ns; end
     else if (baud_clk) begin
         dout <= {dout[7:0], 1'b1};
-		cs <= TX; end 
+		cs <= ns; end 
 
 // nextstate logic
 always_comb
     case(cs)
-        IDLE:   if (tx_en)  ns = TX;
+        IDLE:   if (tx_en)  ns = START;
                 else        ns = IDLE;
-        //START:     ns = TX; // have counter conditional here
-        TX:     if (baud_cnt > 4'd9) ns = TX;
-                else if (~tx_en) ns = IDLE;
-                else ns = TX;
-        default:ns = IDLE;
+        START:  if (~tx_en) ns = IDLE;
+                else        ns = TX; 
+        TX:     if (baud_cnt == 4'd10) ns = START;
+                else    ns = TX;
+        default:        ns = IDLE;
     endcase
 
 // output logic 
-assign sout_data = dout[8];
-
-assign sout = sout_data;
+assign sout = dout[8];
+assign busy_tx = (cs != IDLE);
 
 endmodule
-
-// CHECKINGGGGGGGGGGGGGGGGGGGGG
