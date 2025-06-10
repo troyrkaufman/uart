@@ -12,7 +12,7 @@ module uart_tx(
     output logic baud_clk
 );
 
-typedef enum logic [1:0] {IDLE, START, TX} statetype; // I don't think the STOP state is necessary
+typedef enum logic [1:0] {IDLE, START, TX, STOP} statetype; // I don't think the STOP state is necessary
 statetype cs, ns;
 
 localparam BAUDRATE = 'd115200; // adjust baudrate according to PC setting
@@ -49,12 +49,12 @@ always_ff@(posedge fpga_clk)
     end
 
 // load signal logic
-always_ff@(posedge fpga_clk)
-    if (~nrst) load <= 0;
+always_comb
+    if (~nrst) load = 0;
     else if (cs == START)
-        load <= 1;
+        load = 1;
     else 
-        load <= 0;
+        load = 0;
 
 // tick counter and detect baud edge
 always_ff @(posedge fpga_clk) begin
