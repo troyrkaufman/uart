@@ -30,9 +30,12 @@ module uart_tx_tb();
          
         if (nrst) begin
             repeat (5) begin
-                @(posedge fpga_clk);
+                @(posedge baud_clk);
                 tx_en = 1;
                 din = $urandom_range(0,255);
+                repeat (10) @(posedge baud_clk);
+		tx_en = 0;
+		repeat (9) @(posedge baud_clk); 
             end     
         end
         tx_en = 0;

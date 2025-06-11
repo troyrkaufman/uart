@@ -16,8 +16,8 @@ module uart_tx_tb();
     uart_tx dut(fpga_clk, nrst, tx_en, din, sout, busy_tx, baud_clk);
 
     always begin
-        fpga_clk = 1; #5;
-        fpga_clk = 0; #5;
+        fpga_clk = 1; #50;
+        fpga_clk = 0; #50;
     end
 
     initial begin
@@ -34,6 +34,8 @@ module uart_tx_tb();
                 tx_en = 1;
                 din = $urandom_range(0,255);
                 repeat (10) @(posedge baud_clk);
+		tx_en = 0;
+		repeat (9) @(posedge baud_clk); 
             end     
         end
         tx_en = 0;
